@@ -1,0 +1,247 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shattering Image Effect</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .image-container img {
+            display: block;
+            width: 300px;
+            height: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .shattered-piece {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: url('img/img2.jpg') no-repeat center center;
+            background-size: cover;
+            opacity: 0;
+            animation: shatter 1.5s forwards;
+        }
+
+        @keyframes shatter {
+            0% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) rotate(var(--rotate)) scale(1.5);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="image-container" onclick="shatterImage(event)">
+    <img src="img/img2.jpg" alt="Image" id="shatterImage">
+</div>
+
+<script>
+    function shatterImage(event) {
+        const container = event.currentTarget;
+        const image = container.querySelector('img');
+        const rect = image.getBoundingClientRect();
+        const imageSrc = image.src;
+        const numPieces = 150;  // Increased number of pieces for a more dramatic effect
+
+        // Hide the original image temporarily
+        image.style.opacity = 0;
+
+        // Create shattered pieces
+        for (let i = 0; i < numPieces; i++) {
+            const piece = document.createElement('div');
+            piece.classList.add('shattered-piece');
+
+            // Randomize the position and movement of the pieces
+            const xPos = (Math.random() * rect.width);
+            const yPos = (Math.random() * rect.height);
+
+            // Randomize the direction and rotation of each piece
+            const xMove = (Math.random() * 400 - 200);  // Random x movement (positive/negative)
+            const yMove = (Math.random() * 400 - 200);  // Random y movement (positive/negative)
+            const rotation = (Math.random() * 360);     // Random rotation
+
+            // Set background image and position of each piece
+            piece.style.backgroundImage = `url(${imageSrc})`;
+            piece.style.backgroundPosition = `-${xPos}px -${yPos}px`;  // Adjust background position to create the piece from the image
+            piece.style.left = `${xPos + rect.left}px`;  // Ensure pieces are positioned correctly on the screen
+            piece.style.top = `${yPos + rect.top}px`;
+
+            // Set the custom properties for animation
+            piece.style.setProperty('--x', `${xMove}px`);
+            piece.style.setProperty('--y', `${yMove}px`);
+            piece.style.setProperty('--rotate', `${rotation}deg`);
+
+            container.appendChild(piece);
+
+            // Remove the piece after animation ends
+            piece.addEventListener('animationend', () => {
+                piece.remove();
+            });
+        }
+
+        // Reset image visibility after animation
+        setTimeout(() => {
+            image.style.opacity = 1;
+        }, 1500);  // Increased duration for visibility reset
+    }
+</script>
+
+</body>
+</html> -->
+
+<div class="image-container" onclick="shatterImage(event)">
+    <img src="https://d1tgh8fmlzexmh.cloudfront.net/ccbp-static-website/finding-dory-img.png" alt="Image" id="shatterImage">
+</div>
+
+<style>
+    .image-container {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .image-container img {
+        display: block;
+        width: 300px;
+        height: 300px;
+        transition: opacity 0.3s ease;
+    }
+
+    .shattered-piece {
+        position: absolute;
+        width: 33%;
+        height: 33%;
+        background: url('https://d1tgh8fmlzexmh.cloudfront.net/ccbp-static-website/finding-dory-img.png') no-repeat;
+        background-size: 300px 300px;
+        opacity: 0;
+        animation: shatter 2s forwards;
+        transform-origin: center;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes shatter {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translate(var(--x), var(--y)) rotate(var(--rotate)) scale(1.2);
+        }
+    }
+</style>
+
+<script>
+    function shatterImage(event) {
+        const container = event.currentTarget;
+        const image = container.querySelector('img');
+        const rect = image.getBoundingClientRect();
+        const imageSrc = image.src;
+        const numPieces = 9;  // Breaking the image into 9 pieces (3x3 grid)
+
+        // Hide the original image temporarily
+        image.style.opacity = 0;
+
+        // Create shattered pieces
+        for (let i = 0; i < numPieces; i++) {
+            const piece = document.createElement('div');
+            piece.classList.add('shattered-piece');
+
+            // Calculate position for each piece (using grid positions)
+            const row = Math.floor(i / 3);  // 3 pieces per row
+            const col = i % 3;  // Column number
+            const xPos = col * 100;  // Each piece width (100px)
+            const yPos = row * 100;  // Each piece height (100px)
+
+            // Randomize rotation for a more natural effect
+            const rotate = (Math.random() * 720 - 360);  // Random rotation angle
+
+            // Set background position to get the right part of the image
+            piece.style.backgroundPosition = `-${xPos}px -${yPos}px`;
+            piece.style.left = `${xPos + rect.left}px`;  // Position pieces correctly on the screen
+            piece.style.top = `${yPos + rect.top}px`;
+
+            // Set random movement for pieces to scatter
+            piece.style.setProperty('--x', `${(Math.random() * 800 - 400)}px`);
+            piece.style.setProperty('--y', `${(Math.random() * 800 - 400)}px`);
+            piece.style.setProperty('--rotate', `${rotate}deg`);
+
+            container.appendChild(piece);
+        }
+
+        // Reset image visibility after animation
+        setTimeout(() => {
+            image.style.opacity = 1;
+        }, 2000);  // Adjust the reset delay to match animation
+    }
+</script>
+
+
+ <!-- Home Section -->
+ <section id="home" class="hero-content">
+    <div class="falling-stars"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center" data-aos="fade-right">
+                <h1 class="display-4">Hi, I'm Kathiravan</h1>
+                <p class=" text-light">UI/UX Designer & Software Engineer</p>
+                <p class=" text-light  ">I am a <span class="typing-container" id="typing-effect"></span></p>
+                <p class="about-text">Passionate about creating intuitive designs and developing sleek, functional
+                    applications. I love solving challenges and enhancing user experiences.</p>
+                <div class="text-center">
+                    <a href="https://drive.google.com/file/d/1VWBfqwcb-x28AvlMEXthx3m-7vCkL9NU/view?usp=sharing "
+                        class="cta-button">RESUME</a>
+                </div>
+                <!-- Social Media Icons -->
+                <div class="social-icons mt-4">
+                    <a href="https://Wa.me/+916380201679" target="_blank" class="social-icon whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/kathiravan-sachin-95a9a02a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "
+                        target="_blank" class="social-icon linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://youtube.com/@mediaportal-i6k?si=uJ7wLQB5gDgFCutd" target="_blank"
+                        class="social-icon youtube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.instagram.com/k_kathiravan_sachin/profilecard/?igsh=MWdpdDFtbnpqc211aA== "
+                        target="_blank" class="social-icon instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="social-icon gmail">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+                <img src="img/IMG_20231028_174249.jpg" alt="Kathiravan" class="about-img img-fluid mx-auto d-block">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+v>
